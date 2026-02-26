@@ -515,6 +515,126 @@
     .hc-toggle.open .hc-toggle-arrow{transform:rotate(180deg);}
     .riwayat-empty{text-align:center;padding:60px 20px;color:rgba(0,255,225,0.2);font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:2px;line-height:2.2;}
 
+    /* ══ STRUK PEMBAYARAN ══ */
+    .btn-lihat-struk {
+      width: 100%; padding: 10px; margin-top: 8px;
+      background: linear-gradient(135deg, rgba(105,219,124,0.12), rgba(0,255,225,0.06));
+      border: 1px solid rgba(105,219,124,0.35); border-radius: 8px;
+      font-family: 'Orbitron', sans-serif; font-size: 9px;
+      letter-spacing: 2px; color: var(--green); cursor: pointer;
+      transition: all 0.2s; text-transform: uppercase;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-lihat-struk:active { transform: scale(0.97); background: rgba(105,219,124,0.18); }
+
+    /* Modal struk */
+    #strukModal {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(4,12,18,0.92); backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #strukModal.open { display: flex; }
+    .struk-wrap {
+      background: #071520;
+      border: 1px solid rgba(105,219,124,0.3);
+      border-radius: 20px; width: 100%; max-width: 360px;
+      overflow: hidden; animation: fadeUp 0.3s ease;
+      position: relative;
+    }
+    .struk-close {
+      position: absolute; top: 12px; right: 14px;
+      background: rgba(255,77,109,0.15); border: 1px solid rgba(255,77,109,0.3);
+      color: var(--red); width: 28px; height: 28px; border-radius: 50%;
+      font-size: 14px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; z-index: 10;
+    }
+    .struk-header {
+      background: linear-gradient(135deg, rgba(0,255,225,0.08), rgba(0,120,255,0.05));
+      border-bottom: 1px dashed rgba(0,255,225,0.12);
+      padding: 24px 20px 18px; text-align: center;
+    }
+    .struk-logo {
+      font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+      color: var(--neon); letter-spacing: 4px;
+      text-shadow: var(--neon-glow); margin-bottom: 2px;
+    }
+    .struk-logo-sub {
+      font-family: 'Share Tech Mono', monospace; font-size: 9px;
+      letter-spacing: 3px; color: rgba(0,255,225,0.3);
+    }
+    .struk-status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 14px; padding: 6px 18px; border-radius: 20px;
+      background: rgba(105,219,124,0.12); border: 1px solid rgba(105,219,124,0.3);
+      font-family: 'Orbitron', sans-serif; font-size: 9px;
+      letter-spacing: 2px; color: var(--green); text-transform: uppercase;
+    }
+    .struk-status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 8px var(--green);
+      animation: blink 1.5s ease infinite;
+    }
+    .struk-body { padding: 18px 20px; }
+    .struk-section-title {
+      font-family: 'Orbitron', sans-serif; font-size: 8px;
+      letter-spacing: 2.5px; color: rgba(0,255,225,0.3);
+      text-transform: uppercase; margin-bottom: 10px;
+      padding-bottom: 6px; border-bottom: 1px solid rgba(0,255,225,0.07);
+    }
+    .struk-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 8px; gap: 10px;
+    }
+    .struk-label {
+      font-family: 'Share Tech Mono', monospace; font-size: 10px;
+      color: rgba(255,255,255,0.3); letter-spacing: 0.5px; flex-shrink: 0;
+    }
+    .struk-val {
+      font-family: 'Share Tech Mono', monospace; font-size: 10px;
+      color: rgba(255,255,255,0.75); text-align: right; word-break: break-all;
+    }
+    .struk-val.highlight { color: var(--neon); font-weight: 700; font-size: 12px; }
+    .struk-val.green { color: var(--green); }
+    .struk-divider {
+      border: none; border-top: 1px dashed rgba(0,255,225,0.1);
+      margin: 14px 0;
+    }
+    .struk-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,255,225,0.05); border: 1px solid rgba(0,255,225,0.12);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 6px;
+    }
+    .struk-total-label {
+      font-family: 'Orbitron', sans-serif; font-size: 9px;
+      letter-spacing: 2px; color: rgba(0,255,225,0.5); text-transform: uppercase;
+    }
+    .struk-total-val {
+      font-family: 'Orbitron', sans-serif; font-size: 18px;
+      font-weight: 700; color: var(--neon); text-shadow: var(--neon-glow);
+    }
+    .struk-footer {
+      border-top: 1px dashed rgba(0,255,225,0.1);
+      padding: 14px 20px 18px; text-align: center;
+    }
+    .struk-thankyou {
+      font-family: 'Orbitron', sans-serif; font-size: 9px;
+      letter-spacing: 2px; color: rgba(0,255,225,0.35);
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .struk-note {
+      font-family: 'Share Tech Mono', monospace; font-size: 9px;
+      color: rgba(255,255,255,0.18); letter-spacing: 0.5px;
+    }
+    .struk-barcode {
+      display: flex; justify-content: center; gap: 1.5px;
+      margin: 10px 0 0;
+    }
+    .struk-barcode span {
+      display: inline-block; width: 2px; background: rgba(0,255,225,0.25);
+      border-radius: 1px;
+    }
+
     /* ══ ORDER TRACKING TIMELINE ══ */
     .order-timeline {
       display: flex; align-items: flex-start; gap: 0;
@@ -1760,6 +1880,7 @@ function renderRiwayat(){
         <div class="hce-field-label" style="margin-bottom:4px">Waktu Order</div>
         <div class="hce-field-val" style="font-size:11px;margin-bottom:10px">${o.waktu||'—'}</div>
         ${o.status==='PENDING'?`<button class="btn-recheck" onclick="recheckStatus('${o.id}')">🔄 Cek Status Terbaru</button>`:''}
+        ${o.status==='BERHASIL'?`<button class="btn-lihat-struk" onclick="bukaStruk('${o.id}')">🧾 Lihat Struk Pembayaran</button>`:''}
       </div>
     </div>`;
   }).join('');
@@ -2500,6 +2621,41 @@ function pasteVoucher(kode){
   applyVoucher();
 }
 
+// ════ STRUK ════
+function bukaStruk(orderId){
+  const list=getRiwayat();
+  const o=list.find(x=>x.id===orderId);
+  if(!o)return;
+  document.getElementById('sId').textContent=o.id||'—';
+  document.getElementById('sWaktu').textContent=o.waktu||'—';
+  document.getElementById('sUser').textContent=o.username||'—';
+  document.getElementById('sProduk').textContent=o.produk||'—';
+  document.getElementById('sJumlah').textContent=(o.jumlah||1)+' pcs';
+  document.getElementById('sMetode').textContent=o.metode||'—';
+  document.getElementById('sTotal').textContent='Rp'+(o.total||0).toLocaleString('id-ID');
+  // voucher
+  if(o.voucher){document.getElementById('sVoucherRow').style.display='flex';document.getElementById('sVoucher').textContent=o.voucher;}
+  else{document.getElementById('sVoucherRow').style.display='none';}
+  // barcode dekoratif dari ID
+  const bc=document.getElementById('strukBarcode');
+  bc.innerHTML='';
+  const seed=o.id||'NEO';
+  for(let i=0;i<38;i++){
+    const h=8+Math.abs((seed.charCodeAt(i%seed.length)*13+i*7)%18);
+    const s=document.createElement('span');
+    s.style.height=h+'px';
+    s.style.opacity=(0.3+((i*17+seed.charCodeAt(i%seed.length))%10)/20).toFixed(2);
+    bc.appendChild(s);
+  }
+  document.getElementById('strukModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function tutupStruk(){
+  document.getElementById('strukModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('strukModal').addEventListener('click',function(e){if(e.target===this)tutupStruk();});
+
 // Init
 updateWlBadge();
 renderVoucherAdmin();
@@ -2507,5 +2663,42 @@ updateVoucherHintWrap();
 document.getElementById('jumlah').addEventListener('input',updateTotal);
 updateRwBadge();checkNotifPermission();
 </script>
-</body>
-</html>
+<!-- ══ STRUK MODAL ══ -->
+<div id="strukModal">
+  <div class="struk-wrap">
+    <button class="struk-close" onclick="tutupStruk()">✕</button>
+    <div class="struk-header">
+      <div class="struk-logo">NEOSTORE⚡</div>
+      <div class="struk-logo-sub">STRUK PEMBAYARAN DIGITAL</div>
+      <div class="struk-status-badge">
+        <span class="struk-status-dot"></span>
+        PEMBAYARAN BERHASIL
+      </div>
+    </div>
+    <div class="struk-body">
+      <div class="struk-section-title">Detail Transaksi</div>
+      <div class="struk-row"><span class="struk-label">ID Order</span><span class="struk-val highlight" id="sId">—</span></div>
+      <div class="struk-row"><span class="struk-label">Tanggal</span><span class="struk-val" id="sWaktu">—</span></div>
+      <div class="struk-row"><span class="struk-label">Username</span><span class="struk-val" id="sUser">—</span></div>
+      <hr class="struk-divider">
+      <div class="struk-section-title">Detail Produk</div>
+      <div class="struk-row"><span class="struk-label">Produk</span><span class="struk-val" id="sProduk">—</span></div>
+      <div class="struk-row"><span class="struk-label">Jumlah</span><span class="struk-val" id="sJumlah">—</span></div>
+      <div class="struk-row"><span class="struk-label">Metode Bayar</span><span class="struk-val green" id="sMetode">—</span></div>
+      <div id="sVoucherRow" class="struk-row" style="display:none"><span class="struk-label">Voucher</span><span class="struk-val green" id="sVoucher">—</span></div>
+      <hr class="struk-divider">
+      <div class="struk-total-row">
+        <span class="struk-total-label">Total Bayar</span>
+        <span class="struk-total-val" id="sTotal">—</span>
+      </div>
+      <div class="struk-row" style="margin-top:4px"><span class="struk-label">Status</span><span class="struk-val green">✓ LUNAS</span></div>
+    </div>
+    <div class="struk-footer">
+      <div class="struk-thankyou">Terima kasih telah berbelanja!</div>
+      <div class="struk-note">Simpan struk ini sebagai bukti transaksi</div>
+      <div class="struk-barcode" id="strukBarcode"></div>
+    </div>
+  </div>
+</div>
+
+
