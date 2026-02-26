@@ -1074,8 +1074,8 @@
   <div class="search-filter-wrap">
     <input type="text" class="search-input" id="searchInput" placeholder="Cari produk..." oninput="filterProduk()">
     <select class="filter-sort" id="sortSelect" onchange="filterProduk()">
-      <option value="default">Urutan</option>
-      <option value="price-asc">Harga ↑</option>
+      <option value="default">Default</option>
+      <option value="price-asc" selected>Harga ↑</option>
       <option value="price-desc">Harga ↓</option>
       <option value="sold">Terlaris</option>
       <option value="promo">🔥 Promo</option>
@@ -1761,8 +1761,9 @@ function filterProduk(){
   const sort=document.getElementById('sortSelect').value;
   let list=[...allProduks];
   if(q)list=list.filter(p=>(p.nama||'').toLowerCase().includes(q));
-  if(sort==='price-asc')list.sort((a,b)=>a.harga-b.harga);
-  else if(sort==='price-desc')list.sort((a,b)=>b.harga-a.harga);
+  const effPrice=p=>p.isPromo&&p.diskon>0?Math.round(p.harga*(1-p.diskon/100)):p.harga||0;
+  if(sort==='price-asc')list.sort((a,b)=>effPrice(a)-effPrice(b));
+  else if(sort==='price-desc')list.sort((a,b)=>effPrice(b)-effPrice(a));
   else if(sort==='sold')list.sort((a,b)=>(b.sold||0)-(a.sold||0));
   else if(sort==='promo')list.sort((a,b)=>(b.isPromo?1:0)-(a.isPromo?1:0));
   renderProdukStoreList(list);
@@ -2039,7 +2040,7 @@ function startProdukListener(){
   const{produksRef,onSnapshot}=window._fb;
   onSnapshot(produksRef,snap=>{
     allProduks=snap.docs.map(d=>({docId:d.id,...d.data()}));
-    allProduks.sort((a,b)=>(a.urutan||a.createdAt||0)-(b.urutan||b.createdAt||0));
+    allProduks.sort((a,b)=>{const ha=a.isPromo&&a.diskon>0?Math.round(a.harga*(1-a.diskon/100)):a.harga||0;const hb=b.isPromo&&b.diskon>0?Math.round(b.harga*(1-b.diskon/100)):b.harga||0;return ha-hb;});
     renderProdukStore();renderProdukAdmin();updateTestitProdukOptions();
   });
 }
