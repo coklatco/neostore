@@ -1086,7 +1086,7 @@
     <input type="text" class="search-input" id="searchInput" placeholder="Cari produk..." oninput="filterProduk()">
     <select class="filter-sort" id="sortSelect" onchange="filterProduk()">
       <option value="default">Urutan</option>
-      <option value="price-asc">Harga ↑</option>
+      <option value="price-asc" selected>Harga ↑</option>
       <option value="price-desc">Harga ↓</option>
       <option value="sold">Terlaris</option>
       <option value="promo">🔥 Promo</option>
@@ -1337,6 +1337,20 @@
   </div>
   <div class="admin-section" id="as-settings">
     <div class="settings-section">
+      <div class="settings-card">
+        <div class="settings-title">🔀 Urutan Default Produk</div>
+        <div class="input-row">
+          <label class="input-label">Urutan tampil saat toko dibuka</label>
+          <select class="input-field" id="adminDefaultSort" onchange="saveDefaultSort()" style="width:100%">
+            <option value="price-asc">Harga Termurah Dulu ↑</option>
+            <option value="price-desc">Harga Termahal Dulu ↓</option>
+            <option value="sold">Terlaris Dulu</option>
+            <option value="promo">Promo / Flash Sale Dulu</option>
+            <option value="default">Urutan Manual</option>
+          </select>
+        </div>
+        <div class="tpl-hint">Pengunjung tetap bisa mengubah urutan secara manual melalui dropdown di toko.</div>
+      </div>
       <div class="settings-card">
         <div class="settings-title">🔥 Promo & Countdown</div>
         <div class="promo-toggle-row">
@@ -1767,13 +1781,32 @@ function shareIG(){navigator.clipboard.writeText(window.location.href).then(()=>
 function shareCopyLink(){const txt=`⚡ ${currentShareProduk?.nama||'NEOSTORE'} - ${window.location.href}`;navigator.clipboard.writeText(txt).then(()=>showToast('✓ Link berhasil disalin!'));closeShare();}
 
 // ════ SEARCH & FILTER ════
+const DEFAULT_SORT_KEY='neo_default_sort';
+function getDefaultSort(){return localStorage.getItem(DEFAULT_SORT_KEY)||'price-asc';}
+function saveDefaultSort(){
+  const val=document.getElementById('adminDefaultSort').value;
+  localStorage.setItem(DEFAULT_SORT_KEY,val);
+  // Terapkan ke dropdown pembeli juga
+  const sel=document.getElementById('sortSelect');
+  if(sel)sel.value=val;
+  filterProduk();
+  showToast('✓ Urutan default disimpan!');
+}
+function applyDefaultSort(){
+  const def=getDefaultSort();
+  const sel=document.getElementById('sortSelect');
+  if(sel)sel.value=def;
+  const adminSel=document.getElementById('adminDefaultSort');
+  if(adminSel)adminSel.value=def;
+}
 function filterProduk(){
   const q=document.getElementById('searchInput').value.toLowerCase();
   const sort=document.getElementById('sortSelect').value;
   let list=[...allProduks];
   if(q)list=list.filter(p=>(p.nama||'').toLowerCase().includes(q));
-  if(sort==='price-asc')list.sort((a,b)=>a.harga-b.harga);
-  else if(sort==='price-desc')list.sort((a,b)=>b.harga-a.harga);
+  const effPrice=p=>p.isPromo&&p.diskon>0?Math.round(p.harga*(1-p.diskon/100)):p.harga||0;
+  if(sort==='price-asc')list.sort((a,b)=>effPrice(a)-effPrice(b));
+  else if(sort==='price-desc')list.sort((a,b)=>effPrice(b)-effPrice(a));
   else if(sort==='sold')list.sort((a,b)=>(b.sold||0)-(a.sold||0));
   else if(sort==='promo')list.sort((a,b)=>(b.isPromo?1:0)-(a.isPromo?1:0));
   renderProdukStoreList(list);
@@ -2050,7 +2083,14 @@ function startProdukListener(){
   const{produksRef,onSnapshot}=window._fb;
   onSnapshot(produksRef,snap=>{
     allProduks=snap.docs.map(d=>({docId:d.id,...d.data()}));
-    allProduks.sort((a,b)=>(a.urutan||a.createdAt||0)-(b.urutan||b.createdAt||0));
+    const def=getDefaultSort();
+    const eff=p=>p.isPromo&&p.diskon>0?Math.round(p.harga*(1-p.diskon/100)):p.harga||0;
+    if(def==='price-asc')allProduks.sort((a,b)=>eff(a)-eff(b));
+    else if(def==='price-desc')allProduks.sort((a,b)=>eff(b)-eff(a));
+    else if(def==='sold')allProduks.sort((a,b)=>(b.sold||0)-(a.sold||0));
+    else if(def==='promo')allProduks.sort((a,b)=>(b.isPromo?1:0)-(a.isPromo?1:0));
+    else allProduks.sort((a,b)=>(a.urutan||a.createdAt||0)-(b.urutan||b.createdAt||0));
+    applyDefaultSort();
     renderProdukStore();renderProdukAdmin();updateTestitProdukOptions();
   });
 }
